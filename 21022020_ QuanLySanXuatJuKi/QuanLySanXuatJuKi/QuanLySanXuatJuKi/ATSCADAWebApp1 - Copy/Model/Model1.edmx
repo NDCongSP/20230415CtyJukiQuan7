@@ -1,0 +1,175 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="hvacdatabaseModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.6" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="account">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="username" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="passwords" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="alarmlog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DateTime" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="TagName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="TagAlias" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Value" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="ErrorName1" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="ErrorName2" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="ErrorName3" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="ErrorName4" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="ErrorName5" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="Status" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Acknowledged" Type="varchar" MaxLength="45" Nullable="false" />
+        </EntityType>
+        <EntityType Name="alarmsettings">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TagName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="TagAlias" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ValueStatus1" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ValueStatus2" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ValueStatus3" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ValueStatus4" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ValueStatus5" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="500" />
+          <Property Name="SMS" Type="varchar" MaxLength="500" />
+        </EntityType>
+        <EntityContainer Name="hvacdatabaseModelStoreContainer">
+          <EntitySet Name="account" EntityType="Self.account" Schema="hvacdatabase" store:Type="Tables" />
+          <EntitySet Name="alarmlog" EntityType="Self.alarmlog" Schema="hvacdatabase" store:Type="Tables" />
+          <EntitySet Name="alarmsettings" EntityType="Self.alarmsettings" Schema="hvacdatabase" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="hvacdatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="account">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="username" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="passwords" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="alarmlog">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DateTime" Type="DateTime" Nullable="false" />
+          <Property Name="TagName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TagAlias" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Value" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ErrorName1" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ErrorName2" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ErrorName3" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ErrorName4" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ErrorName5" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Status" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Acknowledged" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="alarmsetting">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TagName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TagAlias" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ValueStatus1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ValueStatus2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ValueStatus3" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ValueStatus4" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ValueStatus5" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="SMS" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityContainer Name="hvacdatabaseEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="accounts" EntityType="Self.account" />
+          <EntitySet Name="alarmlogs" EntityType="Self.alarmlog" />
+          <EntitySet Name="alarmsettings" EntityType="Self.alarmsetting" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="hvacdatabaseModelStoreContainer" CdmEntityContainer="hvacdatabaseEntities">
+          <EntitySetMapping Name="accounts">
+            <EntityTypeMapping TypeName="hvacdatabaseModel.account">
+              <MappingFragment StoreEntitySet="account">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="username" ColumnName="username" />
+                <ScalarProperty Name="passwords" ColumnName="passwords" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="alarmlogs">
+            <EntityTypeMapping TypeName="hvacdatabaseModel.alarmlog">
+              <MappingFragment StoreEntitySet="alarmlog">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="DateTime" ColumnName="DateTime" />
+                <ScalarProperty Name="TagName" ColumnName="TagName" />
+                <ScalarProperty Name="TagAlias" ColumnName="TagAlias" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="ErrorName1" ColumnName="ErrorName1" />
+                <ScalarProperty Name="ErrorName2" ColumnName="ErrorName2" />
+                <ScalarProperty Name="ErrorName3" ColumnName="ErrorName3" />
+                <ScalarProperty Name="ErrorName4" ColumnName="ErrorName4" />
+                <ScalarProperty Name="ErrorName5" ColumnName="ErrorName5" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Acknowledged" ColumnName="Acknowledged" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="alarmsettings">
+            <EntityTypeMapping TypeName="hvacdatabaseModel.alarmsetting">
+              <MappingFragment StoreEntitySet="alarmsettings">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="TagName" ColumnName="TagName" />
+                <ScalarProperty Name="TagAlias" ColumnName="TagAlias" />
+                <ScalarProperty Name="ValueStatus1" ColumnName="ValueStatus1" />
+                <ScalarProperty Name="ValueStatus2" ColumnName="ValueStatus2" />
+                <ScalarProperty Name="ValueStatus3" ColumnName="ValueStatus3" />
+                <ScalarProperty Name="ValueStatus4" ColumnName="ValueStatus4" />
+                <ScalarProperty Name="ValueStatus5" ColumnName="ValueStatus5" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="SMS" ColumnName="SMS" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

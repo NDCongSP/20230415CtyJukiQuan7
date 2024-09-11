@@ -219,12 +219,12 @@ namespace QuetBarcode
                     #region buoc 2. quet ma san pham moi
                     else if (ChotSPMoi == 1 && KhoaDKSP == 0)
                     {
-                        #region kiem tra tim ma san pham
-                        if (MaBarcodeDocVe.Contains("COT") == false && MaBarcodeDocVe.Contains("WP") == false && MaBarcodeDocVe.Contains("XE") == false
-                            && MaBarcodeDocVe.Contains("STARTSP") == false && MaBarcodeDocVe.Contains("ENDSP") == false && MaBarcodeDocVe.Contains("STARTPHOI") == false && MaBarcodeDocVe.Contains("ENDPHOI") == false && DemMaDKSPMoi == 0)
+                        //#region kiem tra tim ma san pham
+                        if (MaBarcodeDocVe.Contains("COT") == false && MaBarcodeDocVe.Contains("XE") == false
+                        && MaBarcodeDocVe.Contains("STARTSP") == false && MaBarcodeDocVe.Contains("ENDSP") == false && MaBarcodeDocVe.Contains("STARTPHOI") == false && MaBarcodeDocVe.Contains("ENDPHOI") == false && DemMaDKSPMoi == 0)
                         {
                             int s = MySqlCmd.KiemtraMaBarCode(MaBarcodeDocVe);
-                            if (s!= -1 && s !=0)
+                            if (s != -1 && s != 0)
                             {
                                 DemMaDKSPMoi++;
                                 MaSanPham = MaBarcodeDocVe;
@@ -239,7 +239,7 @@ namespace QuetBarcode
                         }
                         #endregion
                         #region kiem tra tim ma lot
-                        else if (MaBarcodeDocVe.Contains("WP") && DemMaDKSPMoi == 1)
+                        else if (DemMaDKSPMoi == 1)
                         {
                             DemMaDKSPMoi = 0;
                             ChotSPMoi = 2;//de ghi vao DB
@@ -350,7 +350,7 @@ namespace QuetBarcode
                         //#endregion
 
                         #region kiem tra tim ma san pham
-                        if (MaBarcodeDocVe.Contains("WP") && MaBarcodeDocVe.Contains("COT") == false && MaBarcodeDocVe.Contains("XE") == false
+                        if (MaBarcodeDocVe.Contains("COT") == false && MaBarcodeDocVe.Contains("XE") == false
                             && MaBarcodeDocVe.Contains("STARTSP") == false && MaBarcodeDocVe.Contains("ENDPHOI") == false && MaBarcodeDocVe.Contains("ENDSP") == false && MaBarcodeDocVe.Contains("STARTPHOI") == false && DemDKPhoi == 0)
                         {
                             DemDKPhoi++;
@@ -453,8 +453,8 @@ namespace QuetBarcode
                                 label6.Text = MaBarcodeDocVe;
                                 TruyentinhieuDO8("Q00", "0");
                                 #region update ma cot va xe vao san pham
-                               // TableKiemTra = MySqlCmd.TableWhere("mabarcode", "TrangThai", "MaBarCodeSanPham ='" + MaSanPham + "' and MaBarCodeLot='" + MaLot + "'");
-                                TableKiemTra = MySqlCmd.TableWhere("mabarcode", "TrangThai"," MaBarCodeLot='" + MaLot + "'");
+                                // TableKiemTra = MySqlCmd.TableWhere("mabarcode", "TrangThai", "MaBarCodeSanPham ='" + MaSanPham + "' and MaBarCodeLot='" + MaLot + "'");
+                                TableKiemTra = MySqlCmd.TableWhere("mabarcode", "TrangThai", " MaBarCodeLot='" + MaLot + "'");
 
                                 if (TableKiemTra != null && TableKiemTra.Rows.Count > 0)
                                 {
@@ -548,7 +548,7 @@ namespace QuetBarcode
                         {
                             //if (DemDKPhoi == 0)
                             //    label13.Text = "Quét mã không đúng qui trình, quét mã sản phẩm";
-                             if (DemDKPhoi == 0)
+                            if (DemDKPhoi == 0)
                                 label13.Text = "Quét mã không đúng qui trình, quét mã LOT";
                             //else if (DemDKPhoi == 2)
                             //    label13.Text = "Quét mã không đúng qui trình, quét mã Người Phụ Trách";
@@ -566,9 +566,9 @@ namespace QuetBarcode
                             TruyentinhieuDO8("Q00", "1");
                         }
                     }
-                    #endregion
-                    #endregion
-                    ThoatVong:
+                #endregion
+                #endregion
+                ThoatVong:
                     label11.Text = label11.Text;
                 }
                 //neu quet ma reset thi reset lai de dang ký lai
@@ -594,6 +594,5 @@ namespace QuetBarcode
             }
             catch { }
         }
-        #endregion
     }
 }

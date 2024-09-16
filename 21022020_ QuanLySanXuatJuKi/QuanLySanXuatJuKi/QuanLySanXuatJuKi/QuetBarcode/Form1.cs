@@ -1,7 +1,11 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using PLCPiProject;
+using System;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+using System.Management;
 using System.Windows.Forms;
 
 namespace QuetBarcode
@@ -17,6 +21,9 @@ namespace QuetBarcode
         static byte QuiTrinh = 0;//=1 dang ky san pham moi; =2 dang ky phoi cho lop
         static byte DemMaDKSPMoi = 0, DemDKPhoi = 0;
         static byte KhoaDKSP = 0, KhoaDKPhoi = 0, ChotNhieuXe = 0;
+        static PLCPi _myPLC = new PLCPi();
+        string _comPort = "COM3";
+        byte _idAddress = 1;
 
         private void label11_Click(object sender, EventArgs e)
         {
@@ -106,10 +113,18 @@ namespace QuetBarcode
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            //this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
 
             try
             {
+                _comPort = Properties.Settings.Default.ComPort;
+                _idAddress = Properties.Settings.Default.IdAdd;
+
+                var res = _myPLC.ModbusRTUMaster.KetNoi(_comPort, 9600, 8, System.IO.Ports.Parity.None, System.IO.Ports.StopBits.One);
+                if (res) _labLightAlarm.BackColor = Color.Green;
+                else _labLightAlarm.BackColor = Color.Red;
+                WriteToPLC(_idAddress, false);
+
                 //lay conrting DB server tu file config
                 MySqlCmd.ConectionString = ConfigurationManager.AppSettings["ConString"];// "Server=localhost;Database=juki_giamsatthoigiankho;Port=3306;Uid=root;Pwd=100100;charset=utf8";
                                                                                          //  DataTable bangtam = MySqlCmd.Table("mabarcode");
@@ -165,16 +180,11 @@ namespace QuetBarcode
         #endregion
 
 
-        private void TruyentinhieuDO8(string address, string value)
+        private void WriteToPLC(byte address, bool value)
         {
             try
             {
-                if (iDriver1.Task("ChannelDevice").Tag(address).Status == "Good")
-                {
-                    iDriver1.Task("ChannelDevice").Tag(address).Value = value;
-                }
-
-
+                _myPLC.ModbusRTUMaster.WriteSingleCoil(address, 0, value);
             }
             catch { }
         }
@@ -203,7 +213,7 @@ namespace QuetBarcode
                             ChotSPMoi = 1;
                             DemMaDKSPMoi = 0;
 
-                            TruyentinhieuDO8("Q00", "0");
+                            WriteToPLC(_idAddress, false);
 
 
                             label4.Text = "Quét mã đăng ký sản phẩm mới OK --> Quét lần lượt các mã sau: Sản phẩm -> Lot -> ENDSP";
@@ -212,7 +222,7 @@ namespace QuetBarcode
                         else
                         {
                             label4.Text = "Quét mã đăng ký SP lỗi. Đăng ký lại.";
-                            TruyentinhieuDO8("Q00", "1");
+                            WriteToPLC(_idAddress, true);
                         }
                     }
                     #endregion
@@ -228,13 +238,13 @@ namespace QuetBarcode
                             {
                                 DemMaDKSPMoi++;
                                 MaSanPham = MaBarcodeDocVe;
-                                TruyentinhieuDO8("Q00", "0");
+                                WriteToPLC(_idAddress, false);
                                 label4.Text = "Quét mã sản phẩm OK --> Mã LOT.";
                             }
                             else
                             {
                                 label4.Text = "Mã sản phẩm không tồn tại.";
-                                TruyentinhieuDO8("Q00", "1");
+                                WriteToPLC(_idAddress, true);
                             }
                         }
                         #endregion
@@ -244,14 +254,14 @@ namespace QuetBarcode
                             DemMaDKSPMoi = 0;
                             ChotSPMoi = 2;//de ghi vao DB
                             MaLot = MaBarcodeDocVe;
-                            TruyentinhieuDO8("Q00", "0");
+                            WriteToPLC(_idAddress, false);
                             label4.Text = "Quét mã LOT OK --> Mã kết thúc đăng ký sản phẩm mới.";
                         }
                         #endregion
                         else
                         {
                             label4.Text = "Quét Mã Sai Qui Trình. Chỉ quét mã sản phẩm và mã LOT theo thứ tự SP ->LOT. Quét mã lại.";
-                            TruyentinhieuDO8("Q00", "1");
+                            WriteToPLC(_idAddress, true);
                         }
                     }
                     #endregion
@@ -261,7 +271,7 @@ namespace QuetBarcode
                         if (MaBarcodeDocVe.Contains("ENDSP") == true)
                         {
                             label6.Text = MaBarcodeDocVe;
-                            TruyentinhieuDO8("Q00", "0");
+                            WriteToPLC(_idAddress, false);
                             TableKiemTra = MySqlCmd.TableWhere("mabarcode", "MaBarCodeSanPham", "MaBarCodeSanPham ='" + MaSanPham + "' and MaBarCodeLot='" + MaLot + "'");
                             if (TableKiemTra != null && TableKiemTra.Rows.Count == 0)
                             {
@@ -273,7 +283,7 @@ namespace QuetBarcode
                                     KhoaDKPhoi = 0;
                                     DemMaDKSPMoi = 0;
                                     label10.BackColor = Color.Green;
-                                    TruyentinhieuDO8("Q00", "0");
+                                    WriteToPLC(_idAddress, false);
                                     label4.Text = "Chuyển Tiếp đăng ký sản phẩm mới!";
                                     goto ThoatVong;
                                 }
@@ -286,7 +296,7 @@ namespace QuetBarcode
                                     DemMaDKSPMoi = 0;
                                     label10.BackColor = Color.Red;
                                     label4.Text = "Đăng ký sản phẩm mới thất bại. Không kết nối được DB server. Đăng ký lại.";
-                                    TruyentinhieuDO8("Q00", "1");
+                                    WriteToPLC(_idAddress, true);
                                     goto ThoatVong;
                                 }
                             }
@@ -298,7 +308,7 @@ namespace QuetBarcode
                                 KhoaDKPhoi = 0;
                                 DemMaDKSPMoi = 0;
                                 label4.Text = "Đăng ký sản phẩm mới thất bại. Sản phẩm đã được đăng ký rồi, hoặc không kết nối được DB server. Đăng ký lại.";
-                                TruyentinhieuDO8("Q00", "1");
+                                WriteToPLC(_idAddress, true);
                                 goto ThoatVong;
                             }
 
@@ -306,7 +316,7 @@ namespace QuetBarcode
                         else
                         {
                             label4.Text = "Quét mã kết thúc đăng ký sản phẩm mới lỗi. Chỉ quét mã kết thúc đăng ký sản phẩm. Quét mã lại.";
-                            TruyentinhieuDO8("Q00", "1");
+                            WriteToPLC(_idAddress, true);
                         }
                     }
                     #endregion
@@ -321,14 +331,14 @@ namespace QuetBarcode
                             KhoaDKSP = 1;
                             ChotPhoi = 1;
                             DemDKPhoi = 0;
-                            TruyentinhieuDO8("Q00", "0");
+                            WriteToPLC(_idAddress, false);
                             label13.Text = "Đăng ký phơi OK -->Tiếp tục quét lần lượt các mã sau: LOT -> CỘT -> XE-> NGUOI PHU TRACH";
                             label4.Text = "Quét mã đăng ký SP";
                         }
                         else
                         {
                             label13.Text = "Đăng ký phơi lỗi";
-                            TruyentinhieuDO8("Q00", "1");
+                            WriteToPLC(_idAddress, true);
                         }
                     }
                     #endregion
@@ -355,7 +365,7 @@ namespace QuetBarcode
                         {
                             DemDKPhoi++;
                             MaLot = MaBarcodeDocVe;
-                            TruyentinhieuDO8("Q00", "0");
+                            WriteToPLC(_idAddress, false);
                             label13.Text = "Quét mã LOT OK --> Quét mã COT->XE";
                         }
                         #endregion
@@ -395,7 +405,7 @@ namespace QuetBarcode
                             DemDKPhoi++;
                             MaCot = MaBarcodeDocVe;
                             MaCotUpdateDB = MaCot;
-                            TruyentinhieuDO8("Q00", "0");
+                            WriteToPLC(_idAddress, false);
                             label13.Text = "Quét mã cột OK --> Quét mã xe";
                         }
                         #endregion
@@ -411,12 +421,12 @@ namespace QuetBarcode
                                 else
                                     MaXeUpdateDB = MaXeUpdateDB + "|" + MaBarcodeDocVe;
 
-                                TruyentinhieuDO8("Q00", "0");
+                                WriteToPLC(_idAddress, false);
                                 label13.Text = "Quét mã xe OK --> Quét mã người phụ trách để kết thúc đăng ký phơi, hoặc quét mã cột kế tiếp";
                             }
                             else
                             {
-                                TruyentinhieuDO8("Q00", "1");
+                                WriteToPLC(_idAddress, true);
                                 label13.Text = "Mã xe này đã được nhập. Mời quét mã xe lại.";
                             }
                         }
@@ -433,12 +443,12 @@ namespace QuetBarcode
                                     DemDKPhoi = 2;
                                     ChotNhieuXe = 1;
                                     MaCotUpdateDB = MaCotUpdateDB + "|" + MaCot;
-                                    TruyentinhieuDO8("Q00", "0");
+                                    WriteToPLC(_idAddress, false);
                                     label13.Text = "Quét mã cột kế tiếp OK --> Quét mã xe kế tiếp";
                                 }
                                 else
                                 {
-                                    TruyentinhieuDO8("Q00", "1");
+                                    WriteToPLC(_idAddress, true);
                                     label13.Text = "Mã cột này đã được nhập. Mời quét mã cột lại.";
                                 }
                             }
@@ -451,7 +461,7 @@ namespace QuetBarcode
                                 MaNguoiPhuTrach = MaBarcodeDocVe;
                                 labNPT.Text = MaBarcodeDocVe;
                                 label6.Text = MaBarcodeDocVe;
-                                TruyentinhieuDO8("Q00", "0");
+                                WriteToPLC(_idAddress, false);
                                 #region update ma cot va xe vao san pham
                                 // TableKiemTra = MySqlCmd.TableWhere("mabarcode", "TrangThai", "MaBarCodeSanPham ='" + MaSanPham + "' and MaBarCodeLot='" + MaLot + "'");
                                 TableKiemTra = MySqlCmd.TableWhere("mabarcode", "TrangThai", " MaBarCodeLot='" + MaLot + "'");
@@ -473,7 +483,7 @@ namespace QuetBarcode
                                             KhoaDKSP = 0;
                                             ChotNhieuXe = 0;
                                             MaCotUpdateDB = MaXeUpdateDB = "";
-                                            TruyentinhieuDO8("Q00", "0");
+                                            WriteToPLC(_idAddress, false);
                                         }
                                         else
                                         {
@@ -483,7 +493,7 @@ namespace QuetBarcode
                                             ChotPhoi = 0;
                                             KhoaDKSP = 0; label10.BackColor = Color.Red;
                                             label13.Text = "Đăng ký phơi lỗi. Không kết nối được DB server. Đăng ký phơi lại.";
-                                            TruyentinhieuDO8("Q00", "1");
+                                            WriteToPLC(_idAddress, true);
                                         }
                                     }
                                     else if (TableKiemTra.Rows[0][0].ToString() == "1")
@@ -494,7 +504,7 @@ namespace QuetBarcode
                                         KhoaDKSP = 0;
                                         MaCotUpdateDB = MaXeUpdateDB = "";
                                         label13.Text = "Sản phẩm đang chờ đăng ký, đợi một lát rồi đăng ký phơi lại.";
-                                        TruyentinhieuDO8("Q00", "1");
+                                        WriteToPLC(_idAddress, true);
                                     }
                                     else if (TableKiemTra.Rows[0][0].ToString() == "2")
                                     {
@@ -504,7 +514,7 @@ namespace QuetBarcode
                                         KhoaDKSP = 0;
                                         MaCotUpdateDB = MaXeUpdateDB = "";
                                         label13.Text = "Sản phẩm đã được đăng ký phơi.";
-                                        TruyentinhieuDO8("Q00", "1");
+                                        WriteToPLC(_idAddress, true);
                                     }
                                     else if (TableKiemTra.Rows[0][0].ToString() == "3")
                                     {
@@ -514,7 +524,7 @@ namespace QuetBarcode
                                         KhoaDKSP = 0;
                                         MaCotUpdateDB = MaXeUpdateDB = "";
                                         label13.Text = "Sản phẩm đang trong thời gian phơi, không đăng ký phơi lớp kế tiếp được.";
-                                        TruyentinhieuDO8("Q00", "1");
+                                        WriteToPLC(_idAddress, true);
                                     }
                                 }
                                 else
@@ -526,7 +536,7 @@ namespace QuetBarcode
                                     MaCotUpdateDB = MaXeUpdateDB = "";
                                     label10.BackColor = Color.Green;
                                     label13.Text = "Sản phẩm chưa đăng ký, hoặc kết nối DB server lỗi. Đăng ký phơi lại.";
-                                    TruyentinhieuDO8("Q00", "1");
+                                    WriteToPLC(_idAddress, true);
                                 }
                                 #endregion
                                 //label13.Text = "Chuyển Tiếp đăng ký phơi OK";
@@ -540,7 +550,7 @@ namespace QuetBarcode
                                 //KhoaDKSP = 0;
                                 //ChotNhieuXe = 0;
                                 //MaCotUpdateDB = MaXeUpdateDB = "";
-                                TruyentinhieuDO8("Q00", "1");
+                                WriteToPLC(_idAddress, true);
                             }
                         }
                         #endregion
@@ -563,7 +573,7 @@ namespace QuetBarcode
                             //ChotPhoi = 0;
                             //KhoaDKSP = 0;
                             //DemDKPhoi = 0;
-                            TruyentinhieuDO8("Q00", "1");
+                            WriteToPLC(_idAddress, true);
                         }
                     }
                 #endregion
@@ -588,7 +598,7 @@ namespace QuetBarcode
                     label4.Text = "Quét mã đăng ký SP";
                     label13.Text = "Quét mã đăng ký phơi";
 
-                    TruyentinhieuDO8("Q00", "0");
+                    WriteToPLC(_idAddress, false);
 
                 }
             }

@@ -42,7 +42,6 @@
             this.label10 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.label3 = new System.Windows.Forms.Label();
-            this.iDriver1 = new ATSCADA.iDriver();
             this.label4 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
@@ -54,11 +53,12 @@
             this.label16 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label17 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.labNPT = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this._labLightAlarm = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -189,14 +189,6 @@
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.label3.Visible = false;
             // 
-            // iDriver1
-            // 
-            this.iDriver1.Designmode = false;
-            this.iDriver1.GetTaskTimeOut = ((ulong)(5000ul));
-            this.iDriver1.MaxTagWriteTimes = 10;
-            this.iDriver1.ProjectFile = null;
-            this.iDriver1.WaitingTime = 1000;
-            // 
             // label4
             // 
             this.label4.BackColor = System.Drawing.Color.LightCyan;
@@ -291,9 +283,9 @@
             this.label16.BackColor = System.Drawing.Color.DarkGreen;
             this.label16.Font = new System.Drawing.Font("Times New Roman", 40F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label16.ForeColor = System.Drawing.Color.Gold;
-            this.label16.Location = new System.Drawing.Point(621, 0);
+            this.label16.Location = new System.Drawing.Point(372, 0);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(429, 126);
+            this.label16.Size = new System.Drawing.Size(1085, 126);
             this.label16.TabIndex = 21;
             this.label16.Text = "ĐỌC BARCODE";
             this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -312,23 +304,13 @@
             // 
             // pictureBox2
             // 
-            this.pictureBox2.Image = global::QuetBarcode.Properties.Resources.logoATSCADA;
-            this.pictureBox2.Location = new System.Drawing.Point(1048, 0);
+            this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
+            this.pictureBox2.Location = new System.Drawing.Point(1454, 0);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(553, 126);
+            this.pictureBox2.Size = new System.Drawing.Size(147, 126);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox2.TabIndex = 29;
             this.pictureBox2.TabStop = false;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::QuetBarcode.Properties.Resources.logo;
-            this.pictureBox1.Location = new System.Drawing.Point(-1, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(623, 126);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 20;
-            this.pictureBox1.TabStop = false;
             // 
             // label17
             // 
@@ -372,12 +354,35 @@
             this.label20.Text = "Mã NPT";
             this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(1, 0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(369, 126);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 34;
+            this.pictureBox1.TabStop = false;
+            // 
+            // _labLightAlarm
+            // 
+            this._labLightAlarm.Font = new System.Drawing.Font("Times New Roman", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._labLightAlarm.ForeColor = System.Drawing.Color.DarkOrange;
+            this._labLightAlarm.Location = new System.Drawing.Point(1008, 806);
+            this._labLightAlarm.Name = "_labLightAlarm";
+            this._labLightAlarm.Size = new System.Drawing.Size(224, 23);
+            this._labLightAlarm.TabIndex = 35;
+            this._labLightAlarm.Text = "Trạng thái kết nối đèn báo";
+            this._labLightAlarm.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Honeydew;
             this.ClientSize = new System.Drawing.Size(1600, 881);
+            this.Controls.Add(this._labLightAlarm);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.labNPT);
             this.Controls.Add(this.label20);
             this.Controls.Add(this.label18);
@@ -385,7 +390,6 @@
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.label16);
-            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.label13);
@@ -432,7 +436,6 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Label label3;
-        private ATSCADA.iDriver iDriver1;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label8;
@@ -441,7 +444,6 @@
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.PictureBox pictureBox2;
@@ -449,6 +451,8 @@
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.Label labNPT;
         private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label _labLightAlarm;
     }
 }
 

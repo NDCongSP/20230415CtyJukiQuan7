@@ -6,6 +6,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Management;
+using System.Runtime.CompilerServices;
 using System.Windows.Forms;
 
 namespace QuetBarcode
@@ -24,6 +25,7 @@ namespace QuetBarcode
         static PLCPi _myPLC = new PLCPi();
         string _comPort = "COM3";
         byte _idAddress = 1;
+        bool _isAlarm = false;
 
         private void label11_Click(object sender, EventArgs e)
         {
@@ -113,17 +115,21 @@ namespace QuetBarcode
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            //this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-
             try
             {
                 _comPort = Properties.Settings.Default.ComPort;
                 _idAddress = Properties.Settings.Default.IdAdd;
+                _isAlarm = Properties.Settings.Default.IsAlarm;
 
-                var res = _myPLC.ModbusRTUMaster.KetNoi(_comPort, 9600, 8, System.IO.Ports.Parity.None, System.IO.Ports.StopBits.One);
-                if (res) _labLightAlarm.BackColor = Color.Green;
-                else _labLightAlarm.BackColor = Color.Red;
-                WriteToPLC(_idAddress, false);
+                _labLightAlarm.Visible = _isAlarm;
+
+                if (_isAlarm)
+                {
+                    var res = _myPLC.ModbusRTUMaster.KetNoi(_comPort, 9600, 8, System.IO.Ports.Parity.None, System.IO.Ports.StopBits.One);
+                    if (res) _labLightAlarm.BackColor = Color.Green;
+                    else _labLightAlarm.BackColor = Color.Red;
+                    WriteToPLC(_idAddress, false);
+                }
 
                 //lay conrting DB server tu file config
                 MySqlCmd.ConectionString = ConfigurationManager.AppSettings["ConString"];// "Server=localhost;Database=juki_giamsatthoigiankho;Port=3306;Uid=root;Pwd=100100;charset=utf8";
@@ -184,7 +190,8 @@ namespace QuetBarcode
         {
             try
             {
-                _myPLC.ModbusRTUMaster.WriteSingleCoil(address, 0, value);
+                if (_isAlarm)
+                    _myPLC.ModbusRTUMaster.WriteSingleCoil(address, 0, value);
             }
             catch { }
         }

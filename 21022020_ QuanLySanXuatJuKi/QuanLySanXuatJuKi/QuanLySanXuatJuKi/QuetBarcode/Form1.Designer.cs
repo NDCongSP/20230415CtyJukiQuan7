@@ -101,7 +101,7 @@
             this.labLot.Font = new System.Drawing.Font("Times New Roman", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labLot.Location = new System.Drawing.Point(1142, 233);
             this.labLot.Name = "labLot";
-            this.labLot.Size = new System.Drawing.Size(464, 70);
+            this.labLot.Size = new System.Drawing.Size(390, 70);
             this.labLot.TabIndex = 5;
             this.labLot.Text = "WP1234";
             this.labLot.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -123,7 +123,7 @@
             this.labCot.Font = new System.Drawing.Font("Times New Roman", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labCot.Location = new System.Drawing.Point(1137, 332);
             this.labCot.Name = "labCot";
-            this.labCot.Size = new System.Drawing.Size(434, 70);
+            this.labCot.Size = new System.Drawing.Size(390, 70);
             this.labCot.TabIndex = 7;
             this.labCot.Text = "COT1";
             this.labCot.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -145,7 +145,7 @@
             this.labXe.Font = new System.Drawing.Font("Times New Roman", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labXe.Location = new System.Drawing.Point(1137, 431);
             this.labXe.Name = "labXe";
-            this.labXe.Size = new System.Drawing.Size(434, 70);
+            this.labXe.Size = new System.Drawing.Size(390, 70);
             this.labXe.TabIndex = 9;
             this.labXe.Text = "XE1";
             this.labXe.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -285,7 +285,7 @@
             this.label16.ForeColor = System.Drawing.Color.Gold;
             this.label16.Location = new System.Drawing.Point(372, 0);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(1085, 126);
+            this.label16.Size = new System.Drawing.Size(1016, 126);
             this.label16.TabIndex = 21;
             this.label16.Text = "ĐỌC BARCODE";
             this.label16.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -295,7 +295,7 @@
             this.label1.BackColor = System.Drawing.Color.Honeydew;
             this.label1.Font = new System.Drawing.Font("Times New Roman", 20F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.Black;
-            this.label1.Location = new System.Drawing.Point(1307, 796);
+            this.label1.Location = new System.Drawing.Point(1251, 794);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(281, 37);
             this.label1.TabIndex = 28;
@@ -305,7 +305,7 @@
             // pictureBox2
             // 
             this.pictureBox2.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox2.Image")));
-            this.pictureBox2.Location = new System.Drawing.Point(1454, 0);
+            this.pictureBox2.Location = new System.Drawing.Point(1385, 0);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(147, 126);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -338,7 +338,7 @@
             this.labNPT.Font = new System.Drawing.Font("Times New Roman", 25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labNPT.Location = new System.Drawing.Point(1137, 531);
             this.labNPT.Name = "labNPT";
-            this.labNPT.Size = new System.Drawing.Size(445, 70);
+            this.labNPT.Size = new System.Drawing.Size(390, 70);
             this.labNPT.TabIndex = 33;
             this.labNPT.Text = "NPT:1234";
             this.labNPT.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -380,7 +380,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Honeydew;
-            this.ClientSize = new System.Drawing.Size(1600, 881);
+            this.ClientSize = new System.Drawing.Size(1537, 881);
             this.Controls.Add(this._labLightAlarm);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.labNPT);
